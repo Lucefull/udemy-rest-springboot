@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: udemy-rest-springboot
