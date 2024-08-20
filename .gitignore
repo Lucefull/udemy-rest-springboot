@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# SSH Keys
+*.pem
+*.ppk
+
+# Packages F|iles #
+*.jar
+*.war
+*.ear

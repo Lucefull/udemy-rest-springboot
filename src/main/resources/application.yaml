@@ -1,3 +1,5 @@
 spring:
   application:
     name: udemy-rest-springboot
+server:
+  port: 9000
