@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.lucefull.data.vo.v1.PersonVO;
+import br.com.lucefull.data.vo.v2.PersonVOV2;
 import br.com.lucefull.services.PersonService;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,9 +40,19 @@ public class PersonController {
         return personService.create(person);
     }
 
+    @PostMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PersonVOV2 createV2(@RequestBody PersonVOV2 person) {
+        return personService.createV2(person);
+    }
+
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public PersonVO update(@RequestBody PersonVO person) {
         return personService.update(person);
+    }
+
+    @PutMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PersonVOV2 update(@RequestBody PersonVOV2 person) {
+        return personService.updateV2(person);
     }
 
     @DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

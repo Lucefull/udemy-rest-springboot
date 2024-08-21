@@ -1,6 +1,7 @@
 package br.com.lucefull.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +26,9 @@ public class Person implements Serializable {
     @Column(nullable = false, length = 1)
     private String gender;
 
+    @Column()
+    private Date birthDay;
+
     public Person() {
     }
 
@@ -33,6 +37,14 @@ public class Person implements Serializable {
         this.lastName = lastName;
         this.address = address;
         this.gender = gender;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
 
     public Long getId() {
