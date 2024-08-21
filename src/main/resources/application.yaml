@@ -1,5 +1,16 @@
 spring:
   application:
     name: udemy-rest-springboot
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/udemy_rest_springboot?useTimezone=true&serverTimeZone=UTC
+    username: svc_person
+    password: a.123456
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      show-sql: false
 server:
   port: 9000
