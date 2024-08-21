@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.lucefull.data.vo.v1.PersonVO;
 import br.com.lucefull.exceptions.ResourceNotFoundException;
+import br.com.lucefull.mapper.Mapper;
 import br.com.lucefull.model.Person;
 import br.com.lucefull.repositories.PersonRepository;
 
@@ -18,28 +20,32 @@ public class PersonService {
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll() {
+    public List<PersonVO> findAll() {
         logger.info("Finding all Persons");
 
-        return repository.findAll();
+        return Mapper.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public Person findById(Long id) {
+    public PersonVO findById(Long id) {
 
         logger.info("Finding one Person");
 
-        return repository
+        Person person = repository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records for this ID!"));
+
+        return Mapper.parseObject(person, PersonVO.class);
     }
 
-    public Person create(Person person) {
+    public PersonVO create(PersonVO person) {
         logger.info("Creating one Person");
+        Person p = Mapper.parseObject(person, Person.class);
+        PersonVO vo = Mapper.parseObject(repository.save(p), PersonVO.class);
 
-        return repository.save(person);
+        return vo;
     }
 
-    public Person update(Person person) {
+    public PersonVO update(PersonVO person) {
         logger.info("Updating one Person");
         Person entity = repository
                 .findById(person.getId())
@@ -50,7 +56,7 @@ public class PersonService {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return repository.save(entity);
+        return Mapper.parseObject(repository.save(entity), PersonVO.class);
     }
 
     public void delete(Long id) {
