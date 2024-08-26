@@ -43,7 +43,7 @@ public class PersonController {
             MediaType.APPLICATION_YAML }, produces = {
                     MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
                     MediaType.APPLICATION_YAML })
-    public PersonVO create(@RequestBody PersonVO person) {
+    public PersonVO create(@RequestBody PersonVO person) throws Exception {
         return personService.create(person);
     }
 
@@ -61,7 +61,7 @@ public class PersonController {
             MediaType.APPLICATION_YAML }, produces = {
                     MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
                     MediaType.APPLICATION_YAML })
-    public PersonVO update(@RequestBody PersonVO person) {
+    public PersonVO update(@RequestBody PersonVO person) throws Exception {
         return personService.update(person);
     }
 

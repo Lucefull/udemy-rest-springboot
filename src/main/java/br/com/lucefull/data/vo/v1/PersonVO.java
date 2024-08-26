@@ -2,11 +2,16 @@ package br.com.lucefull.data.vo.v1;
 
 import java.io.Serializable;
 
-//@JsonPropertyOrder({ "id", "first_name", "last_name", "address", "gender" })
-public class PersonVO implements Serializable {
-    private static final long serialVersionUID = 1L;
+import org.springframework.hateoas.RepresentationModel;
 
-    private Long id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "id", "first_name", "last_name", "address", "gender" })
+public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @JsonProperty("id")
+    private Long key;
 
     private String firstName;
 
@@ -18,20 +23,20 @@ public class PersonVO implements Serializable {
     public PersonVO() {
     }
 
-    public PersonVO(Long id, String firstName, String lastName, String address, String gender) {
-        this.id = id;
+    public PersonVO(Long key, String firstName, String lastName, String address, String gender) {
+        this.key = key;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.gender = gender;
     }
 
-    public Long getId() {
-        return id;
+    public Long getKey() {
+        return key;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setKey(Long key) {
+        this.key = key;
     }
 
     public String getFirstName() {
