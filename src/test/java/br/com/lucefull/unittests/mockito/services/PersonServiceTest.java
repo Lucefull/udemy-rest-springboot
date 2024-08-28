@@ -12,9 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import br.com.lucefull.data.vo.v1.PersonVO;
+import br.com.lucefull.exceptions.RequiredObjectIsNullException;
 import br.com.lucefull.model.Person;
 import br.com.lucefull.repositories.PersonRepository;
 import br.com.lucefull.services.PersonService;
@@ -63,6 +65,17 @@ public class PersonServiceTest {
     }
 
     @Test
+    void testUpdateWithNullPerson() {
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            service.update(null);
+        });
+        String expectedMessage = "It is not allowed to persist a null object!";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+
+    }
+
+    @Test
     void testCreateV2() {
 
     }
@@ -78,7 +91,51 @@ public class PersonServiceTest {
     }
 
     @Test
-    void testFindAll() {
+    void testFindAll() throws Exception {
+        List<Person> list = input.mockEntityList();
+        // entity.setId(1L);
+
+        when(personRepository.findAll()).thenReturn(list);
+
+        List<PersonVO> people = service.findAll();
+        assertNotNull(people);
+        assertEquals(list.size(), 14);
+
+        var peopleOne = people.get(1);
+
+        assertNotNull(peopleOne);
+        assertNotNull(peopleOne.getKey());
+        assertNotNull(peopleOne.getLinks());
+
+        assertTrue(peopleOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
+        assertEquals("Address Test1", peopleOne.getAddress());
+        assertEquals("First Name Test1", peopleOne.getFirstName());
+        assertEquals("Last Name Test1", peopleOne.getLastName());
+        assertEquals("Female", peopleOne.getGender());
+
+        peopleOne = people.get(4);
+
+        assertNotNull(peopleOne);
+        assertNotNull(peopleOne.getKey());
+        assertNotNull(peopleOne.getLinks());
+
+        assertTrue(peopleOne.toString().contains("links: [</api/person/v1/4>;rel=\"self\"]"));
+        assertEquals("Address Test4", peopleOne.getAddress());
+        assertEquals("First Name Test4", peopleOne.getFirstName());
+        assertEquals("Last Name Test4", peopleOne.getLastName());
+        assertEquals("Male", peopleOne.getGender());
+
+        peopleOne = people.get(7);
+
+        assertNotNull(peopleOne);
+        assertNotNull(peopleOne.getKey());
+        assertNotNull(peopleOne.getLinks());
+
+        assertTrue(peopleOne.toString().contains("links: [</api/person/v1/7>;rel=\"self\"]"));
+        assertEquals("Address Test7", peopleOne.getAddress());
+        assertEquals("First Name Test7", peopleOne.getFirstName());
+        assertEquals("Last Name Test7", peopleOne.getLastName());
+        assertEquals("Female", peopleOne.getGender());
 
     }
 
@@ -124,6 +181,17 @@ public class PersonServiceTest {
         assertEquals("First Name Test1", result.getFirstName());
         assertEquals("Last Name Test1", result.getLastName());
         assertEquals("Female", result.getGender());
+    }
+
+    @Test
+    void testCreateWithNullPerson() {
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            service.create(null);
+        });
+        String expectedMessage = "It is not allowed to persist a null object!";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+
     }
 
     @Test

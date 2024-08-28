@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.lucefull.controllers.PersonController;
 import br.com.lucefull.data.vo.v1.PersonVO;
 import br.com.lucefull.data.vo.v2.PersonVOV2;
+import br.com.lucefull.exceptions.RequiredObjectIsNullException;
 import br.com.lucefull.exceptions.ResourceNotFoundException;
 import br.com.lucefull.mapper.custom.PersonMapper;
 import br.com.lucefull.model.Person;
@@ -63,6 +64,8 @@ public class PersonService {
     }
 
     public PersonVO create(PersonVO person) throws Exception {
+        if (person == null)
+            throw new RequiredObjectIsNullException();
         logger.info("Creating one Person");
         Person p = PersonMapper.INSTANCE.personVoToPerson(person);
         PersonVO vo = PersonMapper.INSTANCE.personToPersonVO(p);
@@ -81,6 +84,8 @@ public class PersonService {
     }
 
     public PersonVO update(PersonVO person) throws Exception {
+        if (person == null)
+            throw new RequiredObjectIsNullException();
         logger.info("Updating one Person");
         Person entity = repository
                 .findById(person.getKey())
