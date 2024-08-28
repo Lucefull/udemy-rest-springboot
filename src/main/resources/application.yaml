@@ -9,8 +9,13 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       show-sql: false
 server:
   port: 9000
+
+springdoc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true

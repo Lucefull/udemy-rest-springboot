@@ -117,7 +117,7 @@ public class PersonService {
     }
 
     public void delete(Long id) {
-        logger.info("Updating one Person");
+        logger.info("Deleting one Person");
         Person entity = repository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records for this ID!"));
