@@ -67,7 +67,14 @@ public class PersonService {
         if (person == null)
             throw new RequiredObjectIsNullException();
         logger.info("Creating one Person");
+
+        // Person p = new Person();
+        // p.setAddress(person.getAddress());
+        // p.setFirstName(person.getFirstName());
+        // p.setGender(person.getGender());
+        // p.setLastName(person.getLastName());
         Person p = PersonMapper.INSTANCE.personVoToPerson(person);
+        repository.save(p);
         PersonVO vo = PersonMapper.INSTANCE.personToPersonVO(p);
 
         vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());

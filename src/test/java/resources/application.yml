@@ -4,8 +4,8 @@ cors:
 security:
   jwt:
     token:
-      secret-key: 5ccr37
-      expire-lenth: 360000
+      secretKey: 5ccr37
+      expireLenth: 360000
 spring:
   application:
     name: udemy-rest-springboot

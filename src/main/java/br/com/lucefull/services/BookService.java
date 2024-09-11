@@ -50,11 +50,7 @@ public class BookService {
         if (vo == null)
             throw new RequiredObjectIsNullException();
 
-        Book book = new Book();
-        book.setAuthor(vo.getAuthor());
-        book.setLaunchDate(vo.getLaunchDate());
-        book.setPrice(vo.getPrice());
-        book.setTitle(vo.getTitle());
+        Book book = BookMapper.INSTANCE.bookVoToBook(vo);
         repository.save(book);
 
         vo = BookMapper.INSTANCE.bookToBookVO(book);

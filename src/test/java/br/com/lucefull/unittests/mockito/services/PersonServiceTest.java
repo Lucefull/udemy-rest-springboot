@@ -9,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +27,7 @@ import br.com.lucefull.unittests.mapper.mocks.MockPerson;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class PersonServiceTest {
 
     MockPerson input;
@@ -37,21 +41,23 @@ public class PersonServiceTest {
     @BeforeEach
     void setUpMocks() throws Exception {
         input = new MockPerson();
+
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void testUpdate() throws Exception {
         Person entity = input.mockEntity();
-        Person persistent = entity;
-        persistent.setId(1L);
+        Person persisted = entity;
+        persisted.setId(1L);
 
         PersonVO vo = input.mockVO(1);
         vo.setKey(1L);
 
-        // when(personRepository.save(entity)).thenReturn(persistent);
+        when(personRepository.findById(1L)).thenReturn(Optional.of(entity));
+        when(personRepository.save(entity)).thenReturn(persisted);
 
-        var result = service.create(vo);
+        var result = service.update(vo);
 
         assertNotNull(result);
         assertNotNull(result.getKey());
@@ -160,17 +166,16 @@ public class PersonServiceTest {
 
     @Test
     void testCreate() throws Exception {
-        Person entity = input.mockEntity();
+        Person entity = input.mockEntity(1);
+        entity.setId(1L);
+
         Person persisted = entity;
         persisted.setId(1L);
 
         PersonVO vo = input.mockVO(1);
         vo.setKey(1L);
 
-        when(personRepository.findById(1L)).thenReturn(Optional.of(entity));
-        when(personRepository.save(entity)).thenReturn(persisted);
-
-        var result = service.update(vo);
+        var result = service.create(vo);
 
         assertNotNull(result);
         assertNotNull(result.getKey());
