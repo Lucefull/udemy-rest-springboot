@@ -29,8 +29,7 @@ public class AuthService {
     public ResponseEntity<?> signin(AccountCredentialsVO data) {
         try {
 
-            if (data == null || data.getUserName() == null || data.getUserName().isBlank() || data.getPassword() == null
-                    || data.getPassword().isBlank())
+            if (validate(data))
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
             String userName = data.getUserName();
             String password = data.getPassword();
@@ -54,6 +53,33 @@ public class AuthService {
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid username/password supplied!");
         }
+    }
+
+    private boolean validate(AccountCredentialsVO data) {
+        return data == null || data.getUserName() == null || data.getUserName().isBlank() || data.getPassword() == null
+                || data.getPassword().isBlank();
+    }
+
+    public ResponseEntity<?> refreshToken(String userName, String refreshToken) {
+        if (validate(userName, refreshToken))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid client request!");
+
+        User user = userRepository.findByUserName(userName);
+
+        TokenVO tokenResponse = new TokenVO();
+
+        if (user != null) {
+            tokenResponse = tokenProvider.refreshToken(refreshToken);
+        } else {
+            throw new UsernameNotFoundException("Username " + userName + " not found!");
+        }
+
+        return ResponseEntity.ok(tokenResponse);
+
+    }
+
+    private boolean validate(String userName, String refreshToken) {
+        return refreshToken == null || refreshToken.isBlank() || userName == null || userName.isBlank();
     }
 
 }
